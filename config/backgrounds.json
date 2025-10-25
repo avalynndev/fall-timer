@@ -1,0 +1,53 @@
+{
+    "backgrounds": [
+        {
+            "id": "forest",
+            "name": "Forest",
+            "type": "gradient",
+            "value": "bg-gradient-to-br from-green-900 via-green-800 to-green-700",
+            "preview": "linear-gradient(135deg, #14532d, #166534, #15803d)"
+        },
+        {
+            "id": "sunset",
+            "name": "Sunset",
+            "type": "gradient",
+            "value": "bg-gradient-to-br from-orange-400 via-red-500 to-pink-600",
+            "preview": "linear-gradient(135deg, #fb923c, #ef4444, #db2777)"
+        },
+        {
+            "id": "ocean",
+            "name": "Ocean",
+            "type": "gradient",
+            "value": "bg-gradient-to-br from-blue-400 via-cyan-500 to-teal-600",
+            "preview": "linear-gradient(135deg, #60a5fa, #06b6d4, #0d9488)"
+        },
+        {
+            "id": "purple",
+            "name": "Purple Dream",
+            "type": "gradient",
+            "value": "bg-gradient-to-br from-purple-600 via-pink-500 to-red-500",
+            "preview": "linear-gradient(135deg, #9333ea, #ec4899, #ef4444)"
+        },
+        {
+            "id": "aurora",
+            "name": "Aurora",
+            "type": "gradient",
+            "value": "bg-gradient-to-br from-green-400 via-blue-500 to-purple-600",
+            "preview": "linear-gradient(135deg, #4ade80, #3b82f6, #9333ea)"
+        },
+        {
+            "id": "fire",
+            "name": "Fire",
+            "type": "gradient",
+            "value": "bg-gradient-to-br from-yellow-400 via-orange-500 to-red-600",
+            "preview": "linear-gradient(135deg, #facc15, #f97316, #dc2626)"
+        },
+        {
+            "id": "custom",
+            "name": "Custom",
+            "type": "custom",
+            "value": "",
+            "preview": "linear-gradient(135deg, #6b7280, #9ca3af, #d1d5db)"
+        }
+    ]
+}
