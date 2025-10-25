@@ -59,7 +59,6 @@ export function Settings({
   });
 
   const [isDark, setIsDark] = useState(false);
-
   const [position, setPosition] = useState({ x: 160, y: 160 });
   const [isMinimized, setIsMinimized] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -72,6 +71,13 @@ export function Settings({
 
     const storedCustom = localStorage.getItem("customBackground");
     if (storedCustom) setCustomBg(storedCustom);
+
+    const storedDark = localStorage.getItem("isDarkMode");
+    if (storedDark) {
+      const dark = storedDark === "true";
+      setIsDark(dark);
+      document.documentElement.classList.toggle("dark", dark);
+    }
   }, [setBackground, setCustomBg]);
 
   useEffect(() => {
@@ -86,7 +92,7 @@ export function Settings({
     }
     link.href = `https://fonts.googleapis.com/css2?family=${selectedFont.replace(
       / /g,
-      "+",
+      "+"
     )}:wght@400;600&display=swap`;
     document.body.style.fontFamily = `'${selectedFont}', sans-serif`;
   }, [selectedFont]);
@@ -101,7 +107,6 @@ export function Settings({
   const handleCustomBgImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const reader = new FileReader();
     reader.onload = () => {
       const imageUrl = reader.result as string;
@@ -115,6 +120,7 @@ export function Settings({
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDark);
+    localStorage.setItem("isDarkMode", String(isDark));
   }, [isDark]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -133,7 +139,7 @@ export function Settings({
         });
       }
     },
-    [isDragging, dragOffset],
+    [isDragging, dragOffset]
   );
   const handleMouseUp = useCallback(() => setIsDragging(false), []);
   useEffect(() => {
@@ -148,9 +154,7 @@ export function Settings({
   }, [isDragging, handleMouseMove, handleMouseUp]);
 
   if (!isOpen) return null;
-  if (typeof window !== "undefined" && window.innerWidth < 768) {
-    return null;
-  }
+  if (typeof window !== "undefined" && window.innerWidth < 768) return null;
 
   return (
     <div
@@ -160,7 +164,7 @@ export function Settings({
         "fixed bg-background border border-border shadow-2xl rounded-lg overflow-hidden transition-all z-10",
         isMinimized && "h-12",
         isDragging && "cursor-move",
-        className,
+        className
       )}
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
     >
@@ -209,7 +213,7 @@ export function Settings({
                     "px-4 py-2 rounded-md text-sm border transition-colors",
                     background === `${bg}.webp`
                       ? "bg-primary text-primary-foreground border-primary"
-                      : "hover:bg-accent border-border",
+                      : "hover:bg-accent border-border"
                   )}
                 >
                   {bg.toUpperCase()}

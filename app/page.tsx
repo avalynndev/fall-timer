@@ -75,7 +75,13 @@ export default function IdeaPage() {
   return (
     <>
       <div className="block lg:hidden relative min-h-screen overflow-hidden">
-        <div className="absolute inset-0 bg-linear-to-br from-orange-400 via-red-500 to-yellow-300" />
+        <NextImage
+          src={`/bg.webp`}
+          alt="Background"
+          fill
+          className="object-cover transition-opacity duration-700"
+          priority
+        />
         <div className="absolute inset-0 flex items-center justify-center">
           <Timer isOpen={true} onClose={() => {}} className="z-10" />
         </div>

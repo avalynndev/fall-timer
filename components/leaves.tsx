@@ -68,7 +68,7 @@ export default function FallingLeaves() {
   return (
     <div
       id="leaves-container"
-      className="pointer-events-none fixed inset-0 overflow-hidden z-[1] perspective-[600px]"
+      className="pointer-events-none fixed inset-0 overflow-hidden z-1 perspective-[600px]"
     />
   );
 }
