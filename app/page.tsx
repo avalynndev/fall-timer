@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Maximize, Settings, FileText, Clock, Headphones } from 'lucide-react';
-import { Notepad } from '@/components/notepad';
-import { Timer } from '@/components/timer';
-import AmbientSoundsWindow from '@/components/ambient-sound';
-import { Settings as SettingsWindow } from '@/components/settings';
+import { useState, useEffect } from "react";
+import { Maximize, Settings, FileText, Clock, Headphones } from "lucide-react";
+import { Notepad } from "@/components/notepad";
+import { Timer } from "@/components/timer";
+import AmbientSoundsWindow from "@/components/ambient-sound";
+import { Settings as SettingsWindow } from "@/components/settings";
 import NextImage from "next/image";
 
 const motivationalQuotes = [
@@ -18,7 +18,7 @@ const motivationalQuotes = [
   "Dream it. Wish it. Do it.",
   "Success doesn't just find you. You have to go out and get it.",
   "The key is to keep company only with people who uplift you.",
-  "Start where you are. Use what you have. Do what you can."
+  "Start where you are. Use what you have. Do what you can.",
 ];
 
 export default function IdeaPage() {
@@ -26,21 +26,24 @@ export default function IdeaPage() {
   const [showTimer, setShowTimer] = useState(true);
   const [background, setBackground] = useState("bg.webp");
   const [customBg, setCustomBg] = useState<string | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showAmbientSounds, setShowAmbientSounds] = useState(false);
   const [currentQuote, setCurrentQuote] = useState("");
   const [zOrder, setZOrder] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    const randomQuote = motivationalQuotes[Math.floor(Math.random() * motivationalQuotes.length)];
-    setCurrentQuote(randomQuote);
+    queueMicrotask(() => {
+      const randomQuote =
+        motivationalQuotes[
+          Math.floor(Math.random() * motivationalQuotes.length)
+        ];
+      setCurrentQuote(randomQuote);
+    });
   }, []);
 
   useEffect(() => {
     const storedBg = localStorage.getItem("customBackground");
-    if (storedBg) setCustomBg(storedBg);
+    if (storedBg) queueMicrotask(() => setCustomBg(storedBg));
 
     const img = new Image();
     img.src = storedBg || `/${background}`;
@@ -64,19 +67,17 @@ export default function IdeaPage() {
   const toggleFullscreen = () => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
-      setIsFullscreen(true);
     } else {
       document.exitFullscreen();
-      setIsFullscreen(false);
     }
   };
 
   return (
     <>
       <div className="block lg:hidden relative min-h-screen overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-red-500 to-yellow-300" />
+        <div className="absolute inset-0 bg-linear-to-br from-orange-400 via-red-500 to-yellow-300" />
         <div className="absolute inset-0 flex items-center justify-center">
-          <Timer isOpen={true} onClose={() => { }} className="z-10" />
+          <Timer isOpen={true} onClose={() => {}} className="z-10" />
         </div>
       </div>
 
@@ -100,7 +101,7 @@ export default function IdeaPage() {
         )}
 
         {loading && (
-          <div className="absolute inset-0 bg-black flex flex-col items-center justify-center text-white z-[9999]">
+          <div className="absolute inset-0 bg-black flex flex-col items-center justify-center text-white z-9999">
             <div className="w-12 h-12 border-4 border-white/30 border-t-white rounded-full animate-spin mb-4"></div>
             <p className="text-sm tracking-widest uppercase">Loading...</p>
           </div>
@@ -108,8 +109,10 @@ export default function IdeaPage() {
 
         {!loading && (
           <div className="absolute inset-0 flex items-center justify-center text-center px-6 sm:px-12 pointer-events-none">
-            <p className="text-white font-semibold leading-tight drop-shadow-lg 
-              text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl max-w-4xl">
+            <p
+              className="text-white font-semibold leading-tight drop-shadow-lg 
+              text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl max-w-4xl"
+            >
               “{currentQuote}”
             </p>
           </div>
