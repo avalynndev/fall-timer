@@ -117,6 +117,9 @@ export function Settings({
     }, [isDragging, handleMouseMove, handleMouseUp]);
 
     if (!isOpen) return null;
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        return null
+    }
 
     return (
         <div

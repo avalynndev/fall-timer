@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Save, Trash2, Plus, X, Minus, Maximize2, FileText } from "lucide-react"
+import { Trash2, Plus, X, Minus, FileText } from "lucide-react"
 
 interface Note {
     id: string
@@ -32,7 +32,6 @@ function Notepad({ isOpen, onClose, onClick, className }: NotepadProps) {
     const [title, setTitle] = React.useState("")
     const [content, setContent] = React.useState("")
     const [isMinimized, setIsMinimized] = React.useState(false)
-    const [isMaximized, setIsMaximized] = React.useState(false)
     const [position, setPosition] = React.useState({ x: 100, y: 100 })
     const [isDragging, setIsDragging] = React.useState(false)
     const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 })
@@ -89,7 +88,6 @@ function Notepad({ isOpen, onClose, onClick, className }: NotepadProps) {
     }
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isMaximized) return
         const rect = windowRef.current?.getBoundingClientRect()
         if (rect) {
             setDragOffset({
@@ -101,13 +99,13 @@ function Notepad({ isOpen, onClose, onClick, className }: NotepadProps) {
     }
 
     const handleMouseMove = React.useCallback((e: MouseEvent) => {
-        if (isDragging && !isMaximized) {
+        if (isDragging) {
             setPosition({
                 x: e.clientX - dragOffset.x,
                 y: e.clientY - dragOffset.y
             })
         }
-    }, [isDragging, dragOffset, isMaximized])
+    }, [isDragging, dragOffset])
 
     const handleMouseUp = React.useCallback(() => {
         setIsDragging(false)
@@ -141,16 +139,15 @@ function Notepad({ isOpen, onClose, onClick, className }: NotepadProps) {
             onClick={onClick}
             ref={windowRef}
             className={cn(
-                "fixed bg-background border border-border shadow-2xl rounded-lg overflow-hidden transition-all z-5",
-                isMaximized ? "inset-4" : "w-[800px] h-[600px]",
+                "fixed bg-background border border-border shadow-2xl rounded-lg overflow-hidden transition-all z-5 w-[800px] h-[600px]",
                 isMinimized && "h-12",
                 isDragging && "cursor-move",
                 className
-            )} 
-            style={!isMaximized ? {
+            )}
+            style={{
                 left: `${position.x}px`,
                 top: `${position.y}px`,
-            } : {}}
+            }}
         >
             <div
                 className="flex items-center justify-between px-4 py-2 bg-accent border-b border-border cursor-move select-none"

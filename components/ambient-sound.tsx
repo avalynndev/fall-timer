@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { X, Minus, Music, Play, Volume2, StopCircle, PauseCircle, Save, Trash2, Headphones, Bookmark, BookmarkCheck, Layers, Sparkles, Search, Folder } from "lucide-react"
+import { X, Minus, Music, Play, Volume2, StopCircle, PauseCircle, Save, Trash2, Headphones, Bookmark, BookmarkCheck, Layers, Search, Folder } from "lucide-react"
 import { motion } from "framer-motion"
 
 interface AmbientSoundsProps {
@@ -273,6 +273,9 @@ function AmbientSoundsWindow({ isOpen, onClose, className, onClick }: AmbientSou
     }, [isDragging, dragOffset])
 
     if (!isOpen) return null
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+        return null
+    }
 
     return (
         <div
