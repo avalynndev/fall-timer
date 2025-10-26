@@ -1,0 +1,84 @@
+
+export function Test() {
+    return (
+        <>
+            <div className="container px-4 mx-auto">
+                <div className="bg-violet-200 h-10 w-full border-2 border-violet-600 rounded-md my-10 p-6 flex justify-center items-center">
+                    <h1 className="text-center font-mono font-extrabold">Hello World</h1>
+                </div>
+
+                <div className="flex justify-end space-x-6 mt-2">
+                    <div className="h-16 w-16 rounde-full bg-blue-500"></div>
+                    <div className="h-16 w-16 rounde-full bg-orange-500"></div>
+                    <div className="h-16 w-16 rounde-full bg-green-500"></div>
+
+                </div>
+
+                <div className="max-sm:bg-amber-500 max-md:bg-amber-700">
+                    <p className="">I appear on screen wider than 786px</p>
+                </div>
+                <div className="mx-auto max-w-md overflow-hidden rounded-xl bg-white shadow-md md:max-w-2xl">
+                    <div className="md:flex">
+                        <div className="md:shrink-0">
+                            <img
+                                className="h-48 w-full object-cover md:h-full md:w-48"
+                                src="/imgage.png"
+                                alt="Modern building architecture" />
+                        </div>
+                        <div className="p-8">
+                            <div className="text-sm font-semibold tracking-wide text-indigo-500 uppercase">Company retreats</div>
+                            <a href="#" className="mt-1 block text-lg leading-tight font-medium text-black hover:underline">
+                                Incredible accommodation for your team
+                            </a>
+                            <p className="mt-2 text-gray-500">
+                                Looking to take your team away on a retreat to enjoy awesome food and take in some sunshine? We have a list of
+                                places to do just that.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="bg-white dark:bg-black text-black dark:text-white">
+                Dark mode enabled!
+            </div>
+            <div className="my-5 flex flex=col text-black ml-3">
+                <label><input type="checkbox" checked readOnly /> Browserdefault </label>
+                <label><input type="checkbox" className="accent-pink-500" readOnly checked />Customized</label>
+
+            </div>
+
+            <p className="sm:text-7xl text-5xl">Something Nice</p>
+            <p className="text-[min(10vw,70px)]">Something Fluid</p>
+
+            <label className="my-4 block">
+                <input type="file" className="block w-full text-sm text-slate-500 flie:mr-4
+                file:round-full file:border-0 file:bg-violet-50 file:px-4 file:py-2
+                file:text-sm file:font-semibold file:text-violet-700 hover:file:bg-violet-100"/>
+            </label>
+            <div className="selection:bg-green-400 selection:text-black">
+                <p>So I started to walk into he water. I wont lie to you boys,I was
+                    terrified. But I pressed on, and as I made my way past the breakers a strange
+                    calm came over me.I dont know if it was divine interventoin or the kinship of
+                    all living but I tell you Jerry at that moment,I <em>was</em> a marine
+                    biologist. </p>
+            </div>
+
+            <div className="max-w-lg mx-auto p-8">
+
+                <details className="open:bg-white dark:open:bg-slate-900 open:ring-1
+            open:ring-black/5 dark:open:ring-white/10 open:shawdow-lg p-6 rounded-lg open">
+                    <summary className="text-sm leading-6 Text-slate-900 dark:text-black
+            font-semibold select-none">
+                        Why do they call it Ovaltine?
+                    </summary>
+                    <div className="my-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
+                        <p>The mug is round. The jar is round. They should call it Roundtine. </p>
+                    </div>
+                </details>
+            </div>
+            <textarea className="w-full caret-pink-500 p-2 text-blacku" placeholder="type 
+            something nice.."></textarea>
+
+        </>
+    )
+}

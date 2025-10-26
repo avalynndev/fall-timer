@@ -379,7 +379,7 @@ function Timer({ isOpen, onClose, className, onClick }: TimerProps) {
                       alarmRef.current.volume = newVolume / 100;
                     }
                   }}
-                  className="flex-1"
+                    className="flex-1 bg-gray-200 rounded-lg hover:accent-violet-600 accent-violet-500 cursor-pointer "
                 />
                 <span className="text-xs text-muted-foreground w-8">
                   {settings.volume}%
