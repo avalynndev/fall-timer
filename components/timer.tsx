@@ -6,11 +6,11 @@ import {
   Play,
   Pause,
   RotateCcw,
-  Square,
   X,
   Minus,
   Timer as TimerIcon,
   Volume2,
+  Settings,
 } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -38,31 +38,20 @@ const DEFAULT_SETTINGS: TimerSettings = {
 };
 
 function Timer({ isOpen, onClose, className, onClick }: TimerProps) {
-  const [settings, setSettings] = React.useState<TimerSettings>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("timer-settings");
-      return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
-    }
-    return DEFAULT_SETTINGS;
-  });
-
+  const [settings, setSettings] =
+    React.useState<TimerSettings>(DEFAULT_SETTINGS);
   const [mode, setMode] = React.useState<TimerMode>("pomodoro");
-  const [timeLeft, setTimeLeft] = React.useState(settings.pomodoro);
+  const [timeLeft, setTimeLeft] = React.useState(DEFAULT_SETTINGS.pomodoro);
   const [isRunning, setIsRunning] = React.useState(false);
   const [completedPomodoros, setCompletedPomodoros] = React.useState(0);
   const [isMinimized, setIsMinimized] = React.useState(false);
+  const [showSettings, setShowSettings] = React.useState(false);
   const [position, setPosition] = React.useState({ x: 100, y: 100 });
   const [isDragging, setIsDragging] = React.useState(false);
   const [dragOffset, setDragOffset] = React.useState({ x: 0, y: 0 });
 
   const windowRef = React.useRef<HTMLDivElement>(null);
   const alarmRef = React.useRef<HTMLAudioElement | null>(null);
-
-  React.useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem("timer-settings", JSON.stringify(settings));
-    }
-  }, [settings]);
 
   React.useEffect(() => {
     if (!isRunning) return;
@@ -129,7 +118,9 @@ function Timer({ isOpen, onClose, className, onClick }: TimerProps) {
   const formatTime = (seconds: number) => {
     const mm = Math.floor(seconds / 60);
     const ss = seconds % 60;
-    return `${mm.toString().padStart(2, "0")}:${ss.toString().padStart(2, "0")}`;
+    return `${mm.toString().padStart(2, "0")}:${ss
+      .toString()
+      .padStart(2, "0")}`;
   };
 
   const progress = React.useMemo(() => {
@@ -139,10 +130,6 @@ function Timer({ isOpen, onClose, className, onClick }: TimerProps) {
 
   const handleStartTimer = () => setIsRunning(true);
   const handlePauseTimer = () => setIsRunning(false);
-  const handleStopTimer = () => {
-    setIsRunning(false);
-    setTimeLeft(settings[mode]);
-  };
   const handleResetTimer = () => {
     setIsRunning(false);
     setTimeLeft(settings[mode]);
@@ -237,100 +224,177 @@ function Timer({ isOpen, onClose, className, onClick }: TimerProps) {
 
       {!isMinimized && (
         <div className="flex flex-col items-center gap-6 p-6 h-[calc(100%-40px)] overflow-y-auto">
-          <div className="flex gap-2 flex-wrap justify-center">
-            {(["pomodoro", "shortBreak", "longBreak"] as const).map(
-              (timerMode) => (
+          {showSettings ? (
+            <div className="w-full max-w-xs space-y-4">
+              <h3 className="text-lg font-semibold mb-4">Timer Settings</h3>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">
+                  Pomodoro (minutes)
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={Math.floor(settings.pomodoro / 60)}
+                  onChange={(e) => {
+                    const minutes = parseInt(e.target.value) || 1;
+                    setSettings((prev) => ({
+                      ...prev,
+                      pomodoro: minutes * 60,
+                    }));
+                    if (mode === "pomodoro") setTimeLeft(minutes * 60);
+                  }}
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">
+                  Short Break (minutes)
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="30"
+                  value={Math.floor(settings.shortBreak / 60)}
+                  onChange={(e) => {
+                    const minutes = parseInt(e.target.value) || 1;
+                    setSettings((prev) => ({
+                      ...prev,
+                      shortBreak: minutes * 60,
+                    }));
+                    if (mode === "shortBreak") setTimeLeft(minutes * 60);
+                  }}
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-medium">
+                  Long Break (minutes)
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={Math.floor(settings.longBreak / 60)}
+                  onChange={(e) => {
+                    const minutes = parseInt(e.target.value) || 1;
+                    setSettings((prev) => ({
+                      ...prev,
+                      longBreak: minutes * 60,
+                    }));
+                    if (mode === "longBreak") setTimeLeft(minutes * 60);
+                  }}
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-background"
+                />
+              </div>
+
+              <button
+                onClick={() => setShowSettings(false)}
+                className="w-full px-4 py-2 rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 mt-4"
+              >
+                Done
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="flex gap-2 flex-wrap justify-center">
+                {(["pomodoro", "shortBreak", "longBreak"] as const).map(
+                  (timerMode) => (
+                    <button
+                      key={timerMode}
+                      onClick={() => handleSwitchMode(timerMode)}
+                      className={cn(
+                        "px-4 py-2 rounded-lg capitalize transition-colors text-sm",
+                        mode === timerMode
+                          ? "bg-primary text-primary-foreground font-medium"
+                          : "bg-accent hover:bg-accent/80",
+                      )}
+                    >
+                      {timerMode.replace(/([A-Z])/g, " $1").trim()}
+                    </button>
+                  ),
+                )}
+              </div>
+
+              <div className="relative flex h-48 w-48 items-center justify-center rounded-full border-4 border-border">
+                <motion.div
+                  className="absolute inset-1 rounded-full bg-primary/20"
+                  style={{
+                    scaleX: progress / 100,
+                    scaleY: progress / 100,
+                    transformOrigin: "center",
+                  }}
+                  animate={{ scale: progress / 100 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 700,
+                    damping: 30,
+                  }}
+                />
+                <div className="text-4xl font-semibold">
+                  {formatTime(timeLeft)}
+                </div>
+              </div>
+
+              <div className="flex gap-2">
                 <button
-                  key={timerMode}
-                  onClick={() => handleSwitchMode(timerMode)}
+                  onClick={isRunning ? handlePauseTimer : handleStartTimer}
                   className={cn(
-                    "px-4 py-2 rounded-lg capitalize transition-colors text-sm",
-                    mode === timerMode
-                      ? "bg-primary text-primary-foreground font-medium"
-                      : "bg-accent hover:bg-accent/80",
+                    "px-4 py-2 rounded-lg min-w-[80px] flex items-center justify-center gap-2 transition-colors",
+                    isRunning
+                      ? "bg-accent hover:bg-accent/80"
+                      : "bg-primary text-primary-foreground hover:bg-primary/90",
                   )}
                 >
-                  {timerMode.replace(/([A-Z])/g, " $1").trim()}
+                  {isRunning ? (
+                    <Pause className="h-4 w-4" />
+                  ) : (
+                    <Play className="h-4 w-4" />
+                  )}
+                  {isRunning ? "Pause" : "Start"}
                 </button>
-              ),
-            )}
-          </div>
+                <button
+                  onClick={handleResetTimer}
+                  className="px-4 py-2 rounded-lg bg-accent hover:bg-accent/80 min-w-[80px] flex items-center justify-center gap-2"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  Reset
+                </button>
+              </div>
 
-          <div className="relative flex h-48 w-48 items-center justify-center rounded-full border-4 border-border">
-            <motion.div
-              className="absolute inset-1 rounded-full bg-primary/20"
-              style={{
-                scaleX: progress / 100,
-                scaleY: progress / 100,
-                transformOrigin: "center",
-              }}
-              animate={{ scale: progress / 100 }}
-              transition={{
-                type: "spring",
-                stiffness: 700,
-                damping: 30,
-              }}
-            />
-            <div className="text-4xl font-semibold">{formatTime(timeLeft)}</div>
-          </div>
+              <div className="flex items-center gap-4 w-full max-w-[200px]">
+                <Volume2 className="h-4 w-4 text-muted-foreground" />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={settings.volume}
+                  onChange={(e) => {
+                    const newVolume = parseInt(e.target.value);
+                    setSettings((prev) => ({ ...prev, volume: newVolume }));
+                    if (alarmRef.current) {
+                      alarmRef.current.volume = newVolume / 100;
+                    }
+                  }}
+                  className="flex-1"
+                />
+                <span className="text-xs text-muted-foreground w-8">
+                  {settings.volume}%
+                </span>
+              </div>
 
-          <div className="flex gap-2">
-            <button
-              onClick={isRunning ? handlePauseTimer : handleStartTimer}
-              className={cn(
-                "px-4 py-2 rounded-lg min-w-[80px] flex items-center justify-center gap-2 transition-colors",
-                isRunning
-                  ? "bg-accent hover:bg-accent/80"
-                  : "bg-primary text-primary-foreground hover:bg-primary/90",
-              )}
-            >
-              {isRunning ? (
-                <Pause className="h-4 w-4" />
-              ) : (
-                <Play className="h-4 w-4" />
-              )}
-              {isRunning ? "Pause" : "Start"}
-            </button>
-            <button
-              onClick={handleStopTimer}
-              className="px-4 py-2 rounded-lg bg-accent hover:bg-accent/80 min-w-[80px] flex items-center justify-center gap-2"
-            >
-              <Square className="h-4 w-4" />
-              Stop
-            </button>
-            <button
-              onClick={handleResetTimer}
-              className="px-4 py-2 rounded-lg bg-accent hover:bg-accent/80 min-w-[80px] flex items-center justify-center gap-2"
-            >
-              <RotateCcw className="h-4 w-4" />
-              Reset
-            </button>
-          </div>
-
-          <div className="flex items-center gap-4 w-full max-w-[200px]">
-            <Volume2 className="h-4 w-4 text-muted-foreground" />
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={settings.volume}
-              onChange={(e) => {
-                const newVolume = parseInt(e.target.value);
-                setSettings((prev) => ({ ...prev, volume: newVolume }));
-                if (alarmRef.current) {
-                  alarmRef.current.volume = newVolume / 100;
-                }
-              }}
-              className="flex-1"
-            />
-            <span className="text-xs text-muted-foreground w-8">
-              {settings.volume}%
-            </span>
-          </div>
-
-          <div className="text-sm text-muted-foreground">
-            Completed Pomodoros: {completedPomodoros}
-          </div>
+              <button
+                onClick={() => setShowSettings(true)}
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <Settings className="h-4 w-4" />
+                Edit Timer Durations
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>

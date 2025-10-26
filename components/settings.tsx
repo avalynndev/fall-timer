@@ -58,12 +58,21 @@ export function Settings({
     return "Inter";
   });
 
-  const [isDark, setIsDark] = useState(false);
   const [position, setPosition] = useState({ x: 160, y: 160 });
   const [isMinimized, setIsMinimized] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const windowRef = useRef<HTMLDivElement>(null);
+
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedDark = localStorage.getItem("isDarkMode");
+      const dark = storedDark === "true";
+      document.documentElement.classList.toggle("dark", dark);
+      return dark;
+    }
+    return false;
+  });
 
   useEffect(() => {
     const storedBg = localStorage.getItem("selectedBackground");
@@ -71,13 +80,6 @@ export function Settings({
 
     const storedCustom = localStorage.getItem("customBackground");
     if (storedCustom) setCustomBg(storedCustom);
-
-    const storedDark = localStorage.getItem("isDarkMode");
-    if (storedDark) {
-      const dark = storedDark === "true";
-      setIsDark(dark);
-      document.documentElement.classList.toggle("dark", dark);
-    }
   }, [setBackground, setCustomBg]);
 
   useEffect(() => {
@@ -92,7 +94,7 @@ export function Settings({
     }
     link.href = `https://fonts.googleapis.com/css2?family=${selectedFont.replace(
       / /g,
-      "+"
+      "+",
     )}:wght@400;600&display=swap`;
     document.body.style.fontFamily = `'${selectedFont}', sans-serif`;
   }, [selectedFont]);
@@ -139,7 +141,7 @@ export function Settings({
         });
       }
     },
-    [isDragging, dragOffset]
+    [isDragging, dragOffset],
   );
   const handleMouseUp = useCallback(() => setIsDragging(false), []);
   useEffect(() => {
@@ -164,7 +166,7 @@ export function Settings({
         "fixed bg-background border border-border shadow-2xl rounded-lg overflow-hidden transition-all z-10",
         isMinimized && "h-12",
         isDragging && "cursor-move",
-        className
+        className,
       )}
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
     >
@@ -213,7 +215,7 @@ export function Settings({
                     "px-4 py-2 rounded-md text-sm border transition-colors",
                     background === `${bg}.webp`
                       ? "bg-primary text-primary-foreground border-primary"
-                      : "hover:bg-accent border-border"
+                      : "hover:bg-accent border-border",
                   )}
                 >
                   {bg.toUpperCase()}
