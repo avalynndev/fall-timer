@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<center> <h1><a href="https://fall-timer.vercel.app/"> Fall timer</a> </h1></center>
 
-## Getting Started
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,nextjs,tailwind,ts" />
+  <br/>
+  <a href=""><kbd>⚫️ shadcn-ui</kbd></a>
+</p>
+<br/><br/>
 
-First, run the development server:
+# What is Fall Timer?
+
+Fall Timer is a cozy pomodoro-style focus timer inspired by autumn. It helps you work deeply and rest fully with warm fall visuals, ambient sounds (leaves rustling, soft rain), and easy-to-use session controls to adjust your time, it even has a notepad for you to note things.
+
+On mobile however there is only a timer nothing else as the screen size is small.
+
+Here is a [video](https://www.youtube.com/watch?v=fSRl41Pwb1s) showcasing the platform in action.
+
+# Features
+
+- Notepad for noting (markdown supported)
+- Configure durations for all timers
+- Ambient sound toggles (wind, rain, crackling fire, leaves)
+- Notification & sound alerts when sessions end
+- Dark and Light mode switching
+
+# Self Hosting Guide
+
+### Prerequisites
+
+- Node.js 20 or later
+- npm or bun package manager
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/avalynndev/fall-timer.git
+cd fall-timer
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+By following these steps, you can host the Fall Timer web app on your own server and make it accessible to users.
 
-To learn more about Next.js, take a look at the following resources:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Favalynndev%2Ffall-timer)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes and Credits
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Background Images were generated using AI.
+- Sounds were found online.
+- This project was made for the theme "FALL" for Siege hackclub.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
